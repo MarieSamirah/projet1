@@ -6,15 +6,28 @@
             <div>
                 <h5 class="m-0 font-weight-bold text-primary">District</h5>
             </div>
-            <div>
-                <span class="m-0 font-weight-bold text-primary">District</span>
+            <div class="d-sm-flex">
+                <select class="form-control form-control-sm shadow-sm mx-4" style="width: 160px;" name="region" id="regionSelect" onChange="getDisctrictByRegion(this.value)" required>
+                    <option value="">Choisir region</option>
+                    <?php
+                    $database = new Database();
+                    $db = $database->getConnection();
+                    $region = new Region($db);
+                    $stmt = $region->read();
+                    $num = $stmt->rowCount();
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        extract($row);
+                        echo "<option value={$id}>{$nom}</option>";
+                    }
+                    ?>
+                </select>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter District</a>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered table-smM" id="dataTable" width="100%" cellspacing="0">
+        <div class="table-responsive" id="listeDistrict">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>District</th>
@@ -190,5 +203,21 @@
         // Ajouter la valeur dans chaque champs
         $("#id_delete").val(identifiant);
         $("#nom_dst_del").text(nomDst);
+    }
+
+    function getDisctrictByRegion(regionID)
+    {
+        $.ajax({
+            type: 'POST',
+            url: '../Controller/districtController.php', // Le script PHP qui récupère les fokontany
+            data: {
+                getListe: 1,
+                region_id: regionID
+            },
+            success: function(html) {
+                $('#listeDistrict').html(html);
+                updateDataTable("#dataTableNouveau");
+            }
+        });
     }
 </script>

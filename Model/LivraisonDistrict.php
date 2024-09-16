@@ -162,23 +162,5 @@ class LivraisonDistrict {
 
         return false;
     }
-    public function getDetailsByFokontanyId($fokontany_id) {
-        $query = "SELECT * FROM livraison_fokontany WHERE fokontanyID = :fokontany_id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':fokontany_id', $fokontany_id);
-        $stmt->execute();
-        return $stmt;
-    }
-    public function readByCommune($communeId) {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE commune_id = :commune_id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':commune_id', $communeId);
-        $stmt->execute();
-        return $stmt;
-    }
-
-    
 }
-
-
 ?>

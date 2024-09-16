@@ -3,7 +3,7 @@
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Région</h1>
-    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Nouvelle région</a>
+    <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Nouvelle région</a> -->
 </div>
 
 <div class="row">
@@ -22,7 +22,7 @@
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-gray-700"><?php echo "{$region_nom}" ?></h6>
-                    <div class="dropdown no-arrow">
+                    <!-- <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
@@ -31,7 +31,7 @@
                             <a class="dropdown-item" href="#">Modifier</a>
                             <a class="dropdown-item" href="#">Supprimer</a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">

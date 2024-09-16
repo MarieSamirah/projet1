@@ -78,6 +78,34 @@ class District {
         return $stmt;
     }
 
+    // Read all districts
+    public function readJoinByRegion($regionID) {
+        $query = "SELECT 
+                d.Id AS district_id, 
+                d.nom AS district_nom, 
+                d.regionID AS region_id,
+                r.nom AS region_nom, 
+                COUNT(DISTINCT c.Id) AS compte_commune,
+                COUNT(f.Id) AS compte_fokontany
+            FROM 
+                District d
+            JOIN 
+                Region r ON d.regionID = r.Id
+            LEFT JOIN 
+                Commune c ON d.Id = c.districtID
+            LEFT JOIN 
+                Fokontany f ON c.Id = f.communeID
+            WHERE
+                d.regionID = $regionID
+            GROUP BY 
+                d.Id, d.nom, r.nom;";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
     
     // Read a single district by ID
     public function readOne() {

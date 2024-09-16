@@ -1,176 +1,57 @@
-<?php include "header.php"
-
- ?>
+<?php include "header.php";?>
 
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Accueil</h1>
-    <select name="commune" id="commune" class="form-select" onchange="redirectToFokontany()">
-    <option value="">Voir liste Commune</option>
-    <?php
-    // Instancier la connexion à la base de données
-    $database = new Database();
-    $db = $database->getConnection();
-
-    // Instancier la classe Commune
-    $commune = new Commune($db);
-
-    // Lire les communes
-    $stmt = $commune->read();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $id = $row['id'];
-        $nom = $row['nom'];
-        // Ajoutez l'attribut data-url avec l'URL de la page de livraisony
-        echo "<option value='{$id}' data-url='../View/livraisonFokontany.php?commune_id={$id}'>{$nom}</option>";
-    }
-    ?>
-</select>
-</div>
-<!-- Content Row -->
-<div class="row">
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <a href="region.php" class="card-link">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Haute Matsiatra </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">6</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <a href="district.php" class="card-link">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Amorin'i Mania</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">50</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <a href="commune.php" class="card-link">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Commune
-                            </div>
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">250</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <a href="fokontany.php" class="card-link">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Fokontany</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">652</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-sm-flex align-items-center justify-content-between">
+            <h5 class="m-0 font-weight-bold text-primary">Accueil</h5>
+            <!-- Recensement avec status active -->
+            <select class="form-control form-control-sm shadow-sm" style="width:180px" name="recensement" id="recensement" onChange="ActialiserAffichage()">
+                <?php
+                    $database = new Database();
+                    $db = $database->getConnection();
+                    $recensement = new Recensement($db);
+                    $stmt = $recensement->readAllActive();
+                    $num = $stmt->rowCount();
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        extract($row);
+                        echo "<option value={$id}>{$nom_recensement}</option>";
+                }
+                ?>
+            </select>
+        </div>
     </div>
 </div>
-
-
 <!-- Content Row -->
-<div class="row">
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <a href="" class="card-link">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Livraison</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">District</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <a href="recensement.php" class="card-link">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Capagne</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Recensement</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
+<div class="row" id="gridTotal">
+    <!-- Contenu ecrit par statistique en utilisant ajax  getTotalRencensement()-->
 </div>
 
 
 <?php include "footer.php" ?>
 <script>
+    $("#accueilItem").addClass("active");
+    ActialiserAffichage();
 
-function redirectToFokontany() {
-    var select = document.getElementById('commune');
-    var selectedOption = select.options[select.selectedIndex];
-    var url = selectedOption.getAttribute('data-url');
-
-    console.log('Selected option:', selectedOption);
-    console.log('URL:', url);
-
-    if (url) {
-        window.location.href = url;
+    function ActialiserAffichage() {
+        getTotalRencensement();
     }
-}
+
+    function getTotalRencensement(){
+        var recensement = $("#recensement").val();
+        var districtID = $("#districtSelect").val();
+        var communeID = $("#communeSelect").val();
+        $.ajax({
+            type: 'POST',
+            url: '../Controller/statistiqueController.php', // Le script PHP qui récupère les fokontany
+            data: {
+                getTotalRecensement: 1,
+                recensement_id: recensement
+            },
+            success: function(html) {
+                $('#gridTotal').html(html);
+            }
+        });
+    }
 
 </script>

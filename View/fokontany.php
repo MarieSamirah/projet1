@@ -6,14 +6,33 @@
             <div>
                 <h5 class="m-0 font-weight-bold text-primary">Fokontany</h5>
             </div>
-            <div>
-                <span class="m-0 font-weight-bold text-primary">Fokontany</span>
+            <div class="d-sm-flex">
+                <select class="form-control form-control-sm shadow-sm mx-4" style="width: 160px;" name="region" id="regionSelect" required>
+                    <option value="">Choisir region</option>
+                    <?php
+                    $database = new Database();
+                    $db = $database->getConnection();
+                    $region = new Region($db);
+                    $stmt = $region->read();
+                    $num = $stmt->rowCount();
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        extract($row);
+                        echo "<option value={$id}>{$nom}</option>";
+                    }
+                    ?>
+                </select>
+                <select class="form-control form-control-sm shadow-sm" style="width: 160px;" name="district" id="districtSelect" required>
+                    <option value="">Aucun District</option>
+                </select>
+                <select class="form-control form-control-sm shadow-sm mx-4" style="width: 160px;" name="commune" id="communeSelect" required>
+                    <option value="">Aucune Commune</option>
+                </select>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter Fokontany</a>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" id="listeFokontany">
             <table class="table table-bordered table-smM" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -236,6 +255,27 @@
         }
     }
 
+    function getListeFokontany()
+    {
+        var regionID = $("#regionSelect").val();
+        var districtID = $("#districtSelect").val();
+        var communeID = $("#communeSelect").val();
+        $.ajax({
+            type: 'POST',
+            url: '../Controller/fokontanyController.php', // Le script PHP qui récupère les fokontany
+            data: {
+                getListe: 1,
+                region_id: regionID,
+                district_id: districtID,
+                commune_id: communeID
+            },
+            success: function(html) {
+                $('#listeFokontany').html(html);
+                updateDataTable("#dataTableNouveau");
+            }
+        });
+    }
+
     $(document).ready(function() {
         $("#departementItem").addClass("active");
         $("#fokontanyItem").addClass("active");
@@ -253,6 +293,28 @@
         $('#region_edit').change(function() {
             var regionID = $(this).val();
             getDistrictRegion(regionID, 'district_edit', 0);
+        });
+
+        $('#regionSelect').change(function() {
+            var regionID = $(this).val();
+            $('#districtSelect').val("");
+            $('#communeSelect').val("");
+            getDistrictRegion(regionID, "districtSelect");
+            $('#communeSelect').html('<option value="">Choisir commune</option>');
+            getListeFokontany(); //Afficher le tableau contenant la liste
+        });
+
+        $('#districtSelect').change(function() {
+            var districtID = $(this).val();
+            $('#communeSelect').val("");
+            getCommuneDistrict(districtID, "communeSelect");
+            getListeFokontany(); //Afficher le tableau contenant la liste
+        });
+
+        $('#communeSelect').change(function() {
+            var communeID = $(this).val();
+            //getFokontanyCommune(communeID);
+            getListeFokontany(); //Afficher le tableau contenant la liste
         });
     });
 </script>

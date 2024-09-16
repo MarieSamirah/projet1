@@ -1,7 +1,6 @@
 <?php
 include_once 'Database.php';
 
-
 class Commune {
     private $conn;
     private $table_name = "commune";
@@ -46,7 +45,7 @@ class Commune {
         return $stmt;
     }
 
-    //Read by region Id
+    //Read by district Id
     public function readByDistrict($district_id) {
         $query = "SELECT * FROM " . $this->table_name . " WHERE districtID = ?";
         $stmt = $this->conn->prepare($query);
@@ -74,8 +73,63 @@ class Commune {
             LEFT JOIN 
                 Fokontany f ON c.Id = f.communeID
             GROUP BY 
-                c.Id, c.nom, d.nom, r.nom;
-";
+                c.Id, c.nom, d.nom, r.nom;";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    public function readJoinByDistrict($districtID) {
+        $query = "SELECT 
+                c.Id AS commune_id, 
+                c.nom AS commune_nom, 
+                d.nom AS district_nom, 
+                d.Id AS district_id, 
+                r.nom AS region_nom,
+                r.Id AS region_id, 
+                COUNT(f.Id) AS compte_fokontany
+            FROM 
+                Commune c
+            JOIN 
+                District d ON c.districtID = d.Id
+            JOIN 
+                Region r ON d.regionID = r.Id
+            LEFT JOIN 
+                Fokontany f ON c.Id = f.communeID
+            WHERE
+                c.districtID = $districtID
+            GROUP BY 
+                c.Id, c.nom, d.nom, r.nom;";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    public function readJoinByRegion($regionID) {
+        $query = "SELECT 
+                c.Id AS commune_id, 
+                c.nom AS commune_nom, 
+                d.nom AS district_nom, 
+                d.Id AS district_id, 
+                r.nom AS region_nom,
+                r.Id AS region_id, 
+                COUNT(f.Id) AS compte_fokontany
+            FROM 
+                Commune c
+            JOIN 
+                District d ON c.districtID = d.Id
+            JOIN 
+                Region r ON d.regionID = r.Id
+            LEFT JOIN 
+                Fokontany f ON c.Id = f.communeID
+            WHERE
+                r.ID = $regionID
+            GROUP BY 
+                c.Id, c.nom, d.nom, r.nom;";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -136,14 +190,5 @@ class Commune {
 
         return false;
     }
-    public function readFokontanyByCommune($commune_id) {
-        $query = "SELECT id, nom FROM fokontany WHERE commune_id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $commune_id);
-        $stmt->execute();
-        return $stmt;
-    }
-    
-   
 }
 ?>

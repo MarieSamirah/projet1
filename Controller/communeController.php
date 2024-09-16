@@ -46,23 +46,50 @@ if(isset($_POST['supprimer']))
         exit();
     }
 }
-// Vérifier si l'ID de la commune est envoyé
-if(isset($_POST['communeID'])) {
-    $communeID = $_POST['communeID'];
 
-    // Connexion à la base de données
+if(isset($_POST['getListe']))
+{
     $database = new Database();
     $db = $database->getConnection();
 
-    // Récupérer les fokontany pour la commune sélectionnée
-    $query = "SELECT id, nom_fokontany FROM Fokontany WHERE commune_id = :communeID";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':communeID', $communeID, PDO::PARAM_INT);
-    $stmt->execute();
+    $commune = new Commune($db);
+    $regionID = $_POST['region_id'];
+    $districtID = $_POST['district_id'];
 
-    $fokontany = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if($districtID != "") $stmt = $commune->readJoinByDistrict($districtID);
+    else if($regionID != "") $stmt = $commune->readJoinByRegion($regionID);
+    else $stmt = $commune->readJoin();
+    ?>
+    <table class="table table-bordered" id="dataTableNouveau" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Commune</th>
+                <th>District</th>
+                <th>Région</th>
+                <th class='text-center'>Nb Fokontany</th>
+                <th class='text-center'>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $num = $stmt->rowCount();
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                echo "<tr>";
+                echo "<td>{$commune_nom}</td>";
+                echo "<td>{$district_nom}</td>";
+                echo "<td>{$region_nom}</td>";
+                echo "<td class='text-center'>{$compte_fokontany}</td>";
+                echo "<td class='text-center'>";
+                echo "<a href='javascript:prepareUpdate({$commune_id}, {$region_id}, {$district_id}, `{$commune_nom}`)'><i class='fas fa-edit text-warning'></i></a> ";
+                echo "<a href='javascript:prepareDelete({$commune_id}, `{$commune_nom}`)'><i class='fas fa-trash text-danger'></i> </a>";
+                echo "</td>";
+                echo "</tr>";
+            }
+            ?>
 
-    // Retourner la liste des fokontany en JSON
-    echo json_encode($fokontany);
+        </tbody>
+    </table>
+    <?php
 }
 ?>
