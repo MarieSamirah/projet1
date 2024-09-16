@@ -7,7 +7,6 @@
                 <h5 class="m-0 font-weight-bold text-primary">Recensement</h5>
             </div>
             <div>
-                <span class="m-0 font-weight-bold text-primary">Recensement</span>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter recensement</a>
             </div>
         </div>
@@ -19,6 +18,7 @@
                     <tr>
                         <th>Recensement</th>
                         <th>Observation</th>
+                        <th>Status</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -34,8 +34,9 @@
                         echo "<tr>";
                         echo "<td>{$nom_recensement}</td>";
                         echo "<td>{$observation}</td>";
+                        echo "<td class=`{$status}`>{$status}</td>";
                         echo "<td class='text-center'>";
-                        echo "<a href='javascript:prepareUpdate({$id}, `{$nom_recensement}`,  `{$observation}`)'><i class='fas fa-edit text-warning'></i></a> ";
+                        echo "<a href='javascript:prepareUpdate({$id}, `{$nom_recensement}`,  `{$observation}`, `{$status}`)'><i class='fas fa-edit text-warning'></i></a> ";
                         echo "<a href='javascript:prepareDelete({$id}, `{$nom_recensement}`)'><i class='fas fa-trash text-danger'></i></a>";
                         echo "</td>";
                         echo "</tr>";
@@ -61,11 +62,16 @@
             <form action="../Controller/recensementController.php" method="post">
                 <br>
                 <div class="form-group py-3 px-3">
-                <input type="text" class="form-control" name="recensement" id="recensement" placeholder="Recensement" required>
+                    <input type="text" class="form-control" name="recensement" id="recensement" placeholder="Recensement" required>
                 </div>
                 <div class="form-group py-3 px-3">
-                    <input type="text" class="form-control form-control-user" name="observation"
+                    <input type="text" class="form-control" name="observation"
                         id="observation" placeholder="observation" required>
+                </div>
+                <div class="form-group py-3 px-3">
+                    <select class="form-control" name="status" id="status" required>
+                        <option value="Active">Active</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="reset" data-dismiss="modal">Annuler</button>
@@ -96,6 +102,12 @@
                 <div class="form-group py-3 px-3">
                     <input type="text" class="form-control form-control-user" name="observation"
                         id="observation_edite" placeholder="observation" required>
+                </div>
+                <div class="form-group py-3 px-3">
+                    <select class="form-control" name="status" id="status_edite" required>
+                        <option value="Active">Active</option>
+                        <option value="Fermée">Fermée</option>
+                    </select>
                 </div>
                 <div class="form-group py-3 px-3 d-none">
                     <input type="text" class="form-control form-control-user" name="id"
@@ -144,7 +156,7 @@
 <?php include "footer.php" ?>
 <script>
     $("#recensementItem").addClass("active");
-    function prepareUpdate(identifiant, nomRcs, observation)
+    function prepareUpdate(identifiant, nomRcs, observation, status)
     {
         // Afficher le modal de modification
         $("#modalUpdate").modal("show");
@@ -152,6 +164,7 @@
         $("#id").val(identifiant);
         $("#recensement_edite").val(nomRcs);
         $("#observation_edite").val(observation);
+        $("#status_edite").val(status);
     }
 
     function prepareDelete(identifiant, rcs)
