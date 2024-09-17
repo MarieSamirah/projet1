@@ -211,6 +211,35 @@ class LivraisonFokontany {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getSumByRegion($recensementID)
+    {
+        $query = "SELECT
+                r.id AS region_id,
+                r.nom AS region_nom,
+                SUM(l.nombre_recensement) AS total_recensement,
+                SUM(l.nombre_recu) AS total_recu,
+                SUM(l.nombre_doublon) AS total_doublon,
+                SUM(l.nombre_distribue) AS total_distribue,
+                SUM(l.nombre_reste_distribue) AS total_reste_distribue,
+                SUM(l.nombre_autre_anomalie) AS total_anomalie
+            FROM 
+                Region r
+            JOIN 
+                District d ON d.regionID = r.Id
+            LEFT JOIN 
+                Commune c ON d.Id = c.districtID
+            LEFT JOIN 
+                Fokontany f ON c.Id = f.communeID
+            LEFT JOIN 
+                Livraison_Fokontany l ON f.Id = l.fokontanyID AND l.recensementID = $recensementID
+            GROUP BY 
+                r.id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
 }
 ?>
 

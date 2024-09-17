@@ -3,9 +3,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <div class="d-sm-flex align-items-center justify-content-between">
-            <h5 class="m-0 font-weight-bold text-primary">L-Fokontany</h5>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Nouvelle Livraison</a>
             <div class="d-sm-flex">
-            <select class="form-control form-control-sm shadow-sm" style="width:160px" name="recensement" id="recensementSelect">
+            <select class="form-control form-control-sm shadow mx-4" style="width:160px" name="recensement" id="recensementSelect">
                 <?php
                     $database = new Database();
                     $db = $database->getConnection();
@@ -18,7 +18,7 @@
                 }
                 ?>
             </select>
-                <select class="form-control form-control-sm shadow-sm mx-4" style="width: 160px;" name="region" id="regionSelect" required>
+                <select class="form-control form-control-sm shadow " style="width: 160px;" name="region" id="regionSelect" required>
                     <option value="">Choisir region</option>
                     <?php
                     $database = new Database();
@@ -32,13 +32,13 @@
                     }
                     ?>
                 </select>
-                <select class="form-control form-control-sm shadow-sm" style="width: 160px;" name="district" id="districtSelect" required>
+                <select class="form-control form-control-sm shadow mx-4" style="width: 160px;" name="district" id="districtSelect" required>
                     <option value="">Aucun District</option>
                 </select>
-                <select class="form-control form-control-sm shadow-sm mx-4" style="width: 160px;" name="commune" id="communeSelect" required>
+                <select class="form-control form-control-sm shadow" style="width: 160px;" name="commune" id="communeSelect" required>
                     <option value="">Aucune Commune</option>
                 </select>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Livraison</a>
+                
             </div>
         </div>
     </div>
@@ -262,6 +262,7 @@
 <script>
     $("#carnetItem").addClass("active");
     $("#fktItem").addClass("active");
+    $("#currentTitle").html("Livraison Fokontany");
     getListeLivraison(); //Afficher le tableau contenant la liste
 
     function prepareUpdate(id, nombre_recesement, nombre_recu, nombre_doublon, nombre_distribue, nombre_reste_ditribue, nombre_autre_anomalie, date_livraison, fokontanyID,observation) {

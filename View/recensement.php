@@ -3,12 +3,7 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <div class="d-sm-flex align-items-center justify-content-between">
-            <div>
-                <h5 class="m-0 font-weight-bold text-primary">Recensement</h5>
-            </div>
-            <div>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter recensement</a>
-            </div>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter recensement</a>
         </div>
     </div>
     <div class="card-body">
@@ -156,6 +151,7 @@
 <?php include "footer.php" ?>
 <script>
     $("#recensementItem").addClass("active");
+    $("#currentTitle").html("Recensement");
     function prepareUpdate(identifiant, nomRcs, observation, status)
     {
         // Afficher le modal de modification

@@ -4,10 +4,10 @@
     <div class="card-header py-3">
         <div class="d-sm-flex align-items-center justify-content-between">
             <div>
-                <h5 class="m-0 font-weight-bold text-primary">District</h5>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter District</a>
             </div>
             <div class="d-sm-flex">
-                <select class="form-control form-control-sm shadow-sm mx-4" style="width: 160px;" name="region" id="regionSelect" onChange="getDisctrictByRegion(this.value)" required>
+                <select class="form-control form-control-sm shadow" style="width: 160px;" name="region" id="regionSelect" onChange="getDisctrictByRegion(this.value)" required>
                     <option value="">Choisir region</option>
                     <?php
                     $database = new Database();
@@ -21,7 +21,7 @@
                     }
                     ?>
                 </select>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter District</a>
+                
             </div>
         </div>
     </div>
@@ -185,6 +185,7 @@
 <script>
     $("#departementItem").addClass("active");
     $("#districtItem").addClass("active");
+    $("#currentTitle").html("District");
 
     function prepareUpdate(identifiant, regionId, nomDst)
     {

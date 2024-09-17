@@ -4,10 +4,10 @@
     <div class="card-header py-3">
         <div class="d-sm-flex align-items-center justify-content-between">
             <div>
-                <h5 class="m-0 font-weight-bold text-primary">Commune</h5>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter commune</a>
             </div>
             <div class="d-sm-flex">
-                <select class="form-control form-control-sm shadow-sm" style="width: 160px;" name="region" id="regionSelect" required>
+                <select class="form-control form-control-sm shadow mx-4" style="width: 160px;" name="region" id="regionSelect" required>
                     <option value="">Choisir region</option>
                     <?php
                     $database = new Database();
@@ -21,10 +21,10 @@
                     }
                     ?>
                 </select>
-                <select class="form-control form-control-sm shadow-sm mx-4" style="width: 160px;" name="district" id="districtSelect" required>
+                <select class="form-control form-control-sm shadow" style="width: 160px;" name="district" id="districtSelect" required>
                     <option value="">Aucun District</option>
                 </select>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#modalAdd"><i class="fas fa-plus fa-sm text-white-60"></i> Ajouter commune</a>
+                
             </div>
         </div>
     </div>
@@ -254,6 +254,7 @@
     $(document).ready(function() {
         $("#departementItem").addClass("active");
         $("#communeItem").addClass("active");
+        $("#currentTitle").html("Commune");
 
         $('#region').change(function() {
             var regionID = $(this).val();

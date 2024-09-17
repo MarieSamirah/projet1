@@ -110,4 +110,5 @@
 <script>
     $("#carnetItem").addClass("active");
     $("#dstItem").addClass("active");
+    $("#currentTitle").html("Livraison District");
 </script>
